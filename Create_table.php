@@ -1,0 +1,3 @@
+CREATE TABLE `autobtcdonate`.`User` ( `Id` INT(11) NOT NULL ,  `User_Id` INT(6) NOT NULL ,  `FirstName` VARCHAR(255) NOT NULL ,  `LastName` VARCHAR(255) NOT NULL ,  `UserName` VARCHAR(8) NOT NULL ,  `PhoneNumber` INT(11) NOT NULL ,  `Email` VARCHAR(50) NOT NULL ,  `Gender` VARCHAR(50) NOT NULL ,  `Date_of_Birth` VARCHAR(50) NOT NULL ,  `Create_Password` VARCHAR(50) NOT NULL ,  `Confirm_Password` VARCHAR(50) NOT NULL ,  `Logged_In` INT(11) NOT NULL ,  `Referral_Id` INT NOT NULL ,    PRIMARY KEY  (`Id`, `User_Id`),    UNIQUE  (`Email`),    UNIQUE  (`PhoneNumber`),    UNIQUE  (`UserName`)) ENGINE = MyISAM;
+
+

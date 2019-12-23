@@ -1,0 +1,35 @@
+@charset "utf-8";
+.matches {
+	float: left;
+	height: 50px;
+	width: 700px;
+}
+.head {
+	float: left;
+	height: auto;
+	width: 700px;
+}
+.short {
+	float: left;
+	height: 30px;
+	width: 38px;
+	text-align: center;
+	margin-right: 3px;
+	color: #444444;
+	font-size: 14px;
+	line-height: 30px;
+	font-weight: bold;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+.long {
+	float: left;
+	height: 30px;
+	width: 200px;
+	margin-right: 5px;
+	text-align: center;
+	line-height: 30px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #444444;
+	font-weight: bold;
+}

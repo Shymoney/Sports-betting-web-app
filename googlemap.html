@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<script src="http://maps.google.com/maps?file=api"></script>
+<script type="text/javascript">
+    
+	
+	function initialize() {
+      if (GBrowserIsCompatible()) {
+        map = new GMap2(document.getElementById("map"));
+        map.setCenter(new GLatLng(6.45833, 7.523177), 13);
+        map.setUIToDefault();
+        geocoder = new GClientGeocoder();
+      }
+    }
+
+
+
+function showAddress(address) {
+      if (geocoder) {
+        geocoder.getLatLng(
+          address,
+          function(point) {
+            if (!point) {
+              alert(address + " not found");
+            } else {
+              map.setCenter(point, 15);
+              var marker = new GMarker(point, {draggable: true});
+              map.addOverlay(marker);
+              GEvent.addListener(marker, "dragend", function() {
+                marker.openInfoWindowHtml(marker.getLatLng().toUrlValue(9));
+              });
+              GEvent.addListener(marker, "click", function() {
+                marker.openInfoWindowHtml(marker.getLatLng().toUrlValue(9));
+              });
+	      GEvent.trigger(marker, "click");
+            } } ); }  }
+
+</script>
+</head>
+<style type="text/css">
+#map {
+	float: left;
+	height: 500px;
+	width: 500px;
+}
+</style>
+
+<body>
+<div id="map"></div>
+<form>
+<input type="text" style="width:350px" name="address" value="1A,chime avenue ,enugu nigeria" />
+<input type="button"  value="Navigate" onclick=""/>
+</form>
+</body>
+</html>

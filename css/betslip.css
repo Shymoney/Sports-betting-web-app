@@ -1,0 +1,750 @@
+@charset "utf-8";
+.wrapper {
+	height: 927px;
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #2a2e37;
+}
+
+
+.banner_box {
+	float: left;
+	height: 200px;
+	width: 100%;
+	background-color: #333333;
+}
+.logo_box {
+	float: left;
+	height: 50px;
+	width: 250px;
+	margin-left: 100px;
+	margin-top: 25px;
+	padding: 5px;
+	position: absolute;
+	left: 45px;
+}
+
+
+nav {
+	float: left;
+	width: 93%;
+	height: 50px;
+	background-color: #1c813d;
+	display: block;
+	overflow: hidden;
+	padding-left: 7%;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-top-color: #F00;
+	border-bottom-color: #F00;
+	margin-top: 45px;
+	visibility: visible;
+}
+
+nav ul li {
+	float: left;
+	width: auto;
+	margin-left: 10px;
+	list-style-type: none;
+	list-style-position: inside;
+	line-height: 18px;
+	color: #F00;
+	text-decoration: blink;
+	margin-right: 15px;
+}
+nav ul li a {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: lighter;
+	color: #FFF;
+	text-decoration: none;
+}
+nav ul li a:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: lighter;
+	color: #CCC;
+	text-decoration: underline;
+}
+.container{
+	width: 1200px;
+	height: auto;
+	background-color: #FFFFFF;
+	float: left;
+	margin-left: 150px;
+	margin-top: 10px;
+	box-shadow: 0px 1px 2px 2px #666666;
+}
+.left_side{
+	width: 200px;
+	height: 690px;
+	float: left;
+	padding: 10px;
+	background-color: #A0A0A0;
+}
+.middle{
+	width: 680px;
+	height: auto;
+	float: left;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+.right_side{
+	width: 240px;
+	height: 690px;
+	float: left;
+	padding: 10px;
+	margin-left: 20px;
+}
+.social_box {
+	float: left;
+	height: auto;
+	width: 30px;
+	position: absolute;
+	left: 1002px;
+	top: 168px;
+	font-size: 14px;
+	font-family: Verdana, Geneva, sans-serif;
+	text-transform: lowercase;
+	color: #FFF;
+	font-weight: lighter;
+	margin-left: 25px;
+}
+.small {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #FFF;
+	background-color: #3C5A98;
+	float: left;
+	height: auto;
+	width: 35px;
+	position: absolute;
+	left: 1056px;
+	top: 168px;
+	text-align: center;
+	font-weight: bold;
+	line-height: 30px;
+	border-radius: 5px;
+	margin-left: 2px;
+}
+.small_1 {
+	float: left;
+	height: auto;
+	width: 40px;
+	position: absolute;
+	background-color: #3C5A98;
+	left: 1089px;
+	top: 169px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	line-height: 30px;
+	color: #FFF;
+	margin-left: 5px;
+	font-weight: bold;
+	border-radius: 5px;
+	padding-right: 5px;
+	padding-left: 5px;
+	visibility: visible;
+}
+.score_box {
+	float: left;
+	width: 25px;
+	height: 50px;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+.club_box {
+	float: left;
+	height: 50px;
+	width: 400px;
+	margin-right: 40px;
+}
+
+.header_row {
+	float: left;
+	height: auto;
+	width: auto;
+}
+.short_odds {
+	float: left;
+	height: 15px;
+	width: 39px;
+	margin-right: 5px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bolder;
+	text-align: center;
+}
+
+
+.digits_box {
+	background-color: #434255;
+	float: left;
+	width: 25px;
+	color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	border-radius: 2px;
+	box-shadow: -5px 0 0 #fff, 5px 0 0 #fff;
+	display: block;
+	height: 20px;
+	overflow: hidden;
+}
+
+
+
+.digits_box1 {
+	background-color: #434255;
+	float: left;
+	width: 25px;
+	color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	border-radius: 2px;
+	box-shadow: -5px 0 0 #fff, 5px 0 0 #fff;
+	display: block;
+	height: 18px;
+	overflow: hidden;
+	line-height: 20px;
+	visibility: visible;
+}
+.club_match {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	width: 390px;
+	float: left;
+	height: auto;
+	line-height: 15px;
+	font-weight: bold;
+	color: #42464c;
+	padding-left: 10px;
+	display: block;
+	visibility: visible;
+}
+.club_match_1 {
+	float: left;
+	height: auto;
+	width: 390px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #42464c;
+	padding-left: 10px;
+	display: block;
+	visibility: visible;
+}
+.league_type {
+	float: left;
+	width: 390px;
+	padding-left: 10px;
+	height: auto;
+	display: block;
+	visibility: visible;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	line-height: 15px;
+	color: #1b7e39;
+}
+.minutes {
+	color: #1b7e39;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-align: center;
+	width: 20px;
+	float: left;
+	line-height: 15px;
+	visibility: visible;
+}
+
+
+
+
+.navbar {
+	float: left;
+	height: 50px;
+	width: 500px;
+	position: absolute;
+	visibility: visible;
+	left: 144px;
+	top: 116px;
+}
+.button {
+	float: left;
+	height: 50px;
+	margin-right: 5px;
+	width: 80px;
+	text-align: center;
+	margin-top: 2px;
+}
+
+
+.button a {
+	color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	text-decoration: none;
+	line-height: 35px;
+	font-weight: bolder;
+}
+
+.button:hover {
+	float: left;
+	height: 50px;
+	margin-right: 5px;
+	width: 80px;
+	text-align: center;
+	background-color: #1C813D;
+	border-radius: 2px;
+	margin-top: 2px;
+}
+.sign_in {
+	float: left;
+	height: 100px;
+	width: 430px;
+	visibility: visible;
+	margin-top: 10px;
+	margin-left: 650px;
+	padding-left: 150px;
+}
+.username {
+	float: left;
+	width: 155px;
+	height: 30px;
+	padding-top: 10px;
+	padding-right: 5px;
+	padding-left: 10px;
+	margin-right: 30px;
+}
+
+
+.pasword {
+	float: left;
+	width: 155px;
+	margin-left: 20px;
+	height: 30px;
+	padding-top: 10px;
+	padding-right: 5px;
+	margin-right: 10px;
+}
+
+.submit {
+	float: left;
+	height: 30px;
+	width: 60px;
+	margin-left: 10px;
+}
+.register {
+	float: left;
+	height: 30px;
+	width: 100px;
+	margin-left: 60px;
+	color: #29BC59;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11px;
+	margin-top: 5px;
+}
+.register_now {
+	float: left;
+	height: 60px;
+	width: 230px;
+	background-color: #660000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	font-variant: normal;
+	text-align: center;
+	word-spacing: 0.1em;
+	color: #FFF;
+	text-transform: none;
+	line-height: 55px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 1px 1px #FFFFF;
+	text-decoration: none;
+}
+
+.register a {
+	float: left;
+	height: 30px;
+	width: 100px;
+	margin-left: 25px;
+	color: #29BC59;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11px;
+	text-decoration: none;
+}
+.register a:hover {
+	float: left;
+	height: 30px;
+	width: 100px;
+	margin-left: 25px;
+	color: #104B23;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+
+
+.forgot_pwd {
+	color: #F00;
+	float: left;
+	height: 30px;
+	width: 140px;
+	font-size: 11px;
+	font-family: Verdana, Geneva, sans-serif;
+	margin-left: 10px;
+	line-height: 5px;
+}
+.forgot_pwd a {
+	color: #FF0000;
+	float: left;
+	height: 30px;
+	width: 140px;
+	font-size: 11px;
+	font-family: Verdana, Geneva, sans-serif;
+	padding-left: 10px;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-left: 10px;
+	line-height: 5px;
+}
+.forgot_pwd a:hover {
+	color: #7E1212;
+	float: left;
+	height: 30px;
+	width: 140px;
+	font-size: 11px;
+	font-family: Verdana, Geneva, sans-serif;
+	padding-left: 10px;
+	margin-left: 10px;
+	margin-top: 10px;
+	line-height: 5px;
+}
+
+
+.stylelayout{
+	border-radius: 6px;
+	padding-left: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	height: 25px;
+	box-shadow: 1px 1px 1px 1px  #FFFFFF;
+	width: 160px;
+}
+.stylesubmit{
+	background-color: #060;
+	border: 1px solid #000;
+	float: left;
+	height: 40px;
+	width: 60px;
+	color: #FFF;
+	font-size: 14px;
+	border-radius: 5px;
+	margin-top: 5px;
+	cursor: pointer;
+}
+.holder {
+	float: left;
+	height: auto;
+	width: 190px;
+}
+.srch {
+	float: left;
+	width: 187px;
+	height: 35px;
+	margin-bottom: 5px;
+}
+#search {
+	box-shadow: 5px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 14px;
+	color: #8A8A8A;
+}
+.live_betting {
+	float: left;
+	height: 30px;
+	width: 190px;
+	background-color: #800000;
+	color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	text-align: center;
+	line-height: 25px;
+	text-decoration: none;
+	font-weight: bold;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+
+.colapse {
+	float: left;
+	height: 30px;
+	width: 190px;
+	border-bottom-width: 1px;
+	border-bottom-style: ridge;
+	border-bottom-color: #333;
+}
+.sport_img {
+	float: left;
+	height: 24px;
+	width: 27px;
+	padding: 3px;
+}
+.sport_text {
+	float: left;
+	height: 30px;
+	width: 145px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #FFFFFF;
+	line-height: 25px;
+	margin-right: 5px;
+	margin-left: 7px;
+	text-decoration: none;
+}
+
+.footer {
+	float: left;
+	height: auto;
+	width: 100%;
+	background-color: #2a2e37;
+	margin-top: 7px;
+	border-top-width: 5px;
+	border-top-style: inset;
+	border-top-color: #008A00;
+	color: #1C813D;
+}
+.lost_box {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bolder;
+	float: left;
+	height: auto;
+	width: 300px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+.long {
+	float: left;
+	width: 600px;
+	margin-bottom: 20px;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: 500;
+}
+.form_box {
+	float: left;
+	width: 400px;
+	height: auto;
+}
+.send {
+	float: right;
+	height: 50px;
+	width: 70px;
+	margin-left: 100px;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+
+
+
+.footer ul {
+	float: left;
+	height: auto;
+	width: 200px;
+	margin-left: 120px;
+}
+
+.footer ul li {
+	height: 30px;
+	width: 200px;
+	list-style-type: none;
+
+}
+
+
+
+.footer ul li a {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+	color: #97f589;
+	font-weight: lighter;
+}
+.footer ul li a:active {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+	color: #996600;
+	font-weight: lighter;
+}
+
+.footer ul li a:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+	color: #FFFFFF;
+	font-weight: lighter;
+}
+
+
+
+span a {
+	color: #FFF;
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.reserved {
+	height: 50px;
+	width: 100%;
+	float: left;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #FFF;
+	text-align: center;
+	margin-top: 20px;
+}
+.club_name {
+	float: left;
+	width: 300px;
+	margin-top: 5px;
+	margin-left: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	margin-bottom: 5px;
+	color: #000;
+}
+.odds_type {
+	float: left;
+	width: 120px;
+	height: 30px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	line-height: 30px;
+}
+form .win {
+	float: left;
+	height: auto;
+	width: 300px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+.bonus {
+	float: left;
+	height: 20px;
+	width: 300px;
+	background-color: #515B62;
+	font-size: 13px;
+	color: #FFF;
+	margin-bottom: 2px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.wining {
+	float: left;
+	height: 20px;
+	width: 300px;
+	background-color: #515B62;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #FFF;
+	margin-bottom: 2px;
+}
+.total {
+	float: left;
+	height: 20px;
+	width: 300px;
+	background-color: #515B62;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #FFF;
+}
+
+
+
+
+.odds_for_the_bet {
+	float: left;
+	height: 30px;
+	width: 90px;
+}
+.odds_calculation {
+	float: left;
+	height: auto;
+	width: 400px;
+}
+form .stake {
+	float: left;
+	height: 30px;
+	width: 50px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	line-height: 30px;
+	margin-left: 10px;
+}
+form .txt_box {
+	float: left;
+	height: 25px;
+	width: 70px;
+	margin-right: 20px;
+}
+.but_box {
+	float: left;
+	height: 30px;
+	width: 300px;
+	margin-top: 5px;
+}
+
+.the_stake_odds {
+	float: left;
+	height: 30px;
+	width: 300px;
+	margin-left: 10px;
+}
+.inner_left {
+	float: left;
+	height: auto;
+	width: 400px;
+	margin-top: 10px;
+}
+.user_box {
+	float: left;
+	width: 75px;
+	height: 30px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #FFF;
+	visibility: visible;
+	text-align: center;
+	margin-top: 3px;
+}
+.money_box {
+	float: left;
+	width: 350px;
+	height: auto;
+}
+.money_box2 {
+	float: left;
+	width: 220px;
+	margin-left: 78px;
+}
+
+.refresh_box {
+	float: left;
+	height: auto;
+	width: 25px;
+	margin-left: 30px;
+	padding-left: 25px;
+}
