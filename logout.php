@@ -1,6 +1,6 @@
 <?php
 //for logout just terminate the cookie by adding negative 
-setcookie('user',$user,time()-3600);
+session_unset();
 header('location:index.php');
  
 ?>

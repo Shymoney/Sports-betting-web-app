@@ -1,41 +1,77 @@
 <?php
-	require('Admin connect.php');
 	
-	$obj=new Connect;
-	$obj->__constructor();
-	
-	if(isset($_GET['match_id']))
-	{
-		$a=$_GET['match_id'];
-	
-	
-	$result= mysql_query("select * from livematches where match_id='$a'") or die(''.mysql_error());
-	
-	while($row= mysql_fetch_array($result,MYSQL_ASSOC))
-		{
-			$id = $row['match_id'];
-			$score = $row['score'];
-			$score_2 = $row['score1'];
-			$time = $row['time'];
-			$home_team= $row['hometeam'];
-			$away_team= $row['awayteam'];
-		
-		}
+	session_start();
 
-}		
-		
-	if(isset($_POST['submit']))
-	{
-		$sc = $_POST['score'];
-		$sc_2 = $_POST['score1'];
-		$ti = $_POST['time'];
-	
-$update = mysql_query("update livematches set score='$sc',score1='$sc_2',time='$ti' where match_id='$a' ",$obj->__constructor()); 
+	ob_start();
 
-		if($update){echo '<script type="text/javascript">
+	require_once "Admin connect.php";
+
+	/*
+	* check if the session is set and not empty
+	* assign the session to a variable
+	*/
+	if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
+		$user_session = $_SESSION['Username'];
+			
+	}else {
+		//redirect the user 
+		header("Location:Admin login.php");
+	}
+
+	
+	
+?>
+
+
+<?php
+	
+	//create an instance of the class
+	$call_db = DatabaseConnect::getInstance();
+	
+	
+	if(isset($_GET['match_id'])) {
+		$a = $_GET['match_id'];
+	
+		//prepare the query
+		$query = $call_db->connect->prepare("SELECT * FROM livematches WHERE match_id='$a'");
+		//execute the query
+		 $query->execute();
+		
+		while($result = $query->fetch(PDO::FETCH_ASSOC))
+			{
+				$id[] = $result['match_id'];
+				$score[] = $result['score'];
+				$score_2[] = $result['score1'];
+				$time[] = $result['time'];
+				$home_team[] = $result['hometeam'];
+				$away_team[] = $result['awayteam'];
+			
+			}
+	}		
+		
+	if(isset($_POST['submit']))	{
+		//prevent sql injection
+		$sc = $call_db->secureTxt($_POST['score']);
+		$sc_2 = $call_db->secureTxt($_POST['score1']);
+		$time = $call_db->secureTxt($_POST['time']);
+	
+		//prepare the query
+		$query = $call_db->connect->prepare("UPDATE livematches SET score='$sc',score1='$sc_2',time='$ti' WHERE match_id='$a' ");
+		
+		//bindparameters with form placeholders
+		$query->bindParam(':score', $sc, PDO::PARAM_STR);
+		$query->bindParam(':score1', $sc_2, PDO::PARAM_STR);
+		$query->bindParam(':time', $time, PDO::PARAM_STR);
+
+		//execute the query
+		$result = $query->execute();
+
+		if($result == true) {
+			echo '<script type="text/javascript">
 							var msg="update successfully";
 							alert(msg);
-							</script>';}
+							</script>';
+		}
 	
 	
 	}
@@ -148,8 +184,8 @@ foreach($country as $count){echo $count;
 
 <div class="category">
 <div class="sport_box">Score</div>
-<div class="sport_box"><input name="score" type="text" class="odds_style" id="score" value="<?php  echo $score?>" /></div>
-<div class="sport_box"><input name="score1" type="text" class="odds_style" id="score1" value="<?php echo $score_2?>" /></div>
+<div class="sport_box"><input name="score" type="text" class="odds_style" id="score" value="<?php if(isset($result[$score])) { echo $result[$score]; }?>" /></div>
+<div class="sport_box"><input name="score1" type="text" class="odds_style" id="score1" value="<?php if(isset($result[$score_2])) { echo $result[$score_2]; }?>" /></div>
 </div>
 <div class="category">
 <div class="sport_box">Time</div>
@@ -164,8 +200,8 @@ foreach($country as $count){echo $count;
 </div>
 <div class="category">
 <div class="sport_box">Club Name</div>
-<div class="club"><input name="hometeam" type="text" class="club_style" id="hometeam"  placeholder="Home Club" value="<?php echo $home_team ?>"/></div>
-<div class="club"><input name="awayteam" type="text" class="club_style" id="awayteam"  placeholder="Away Club" value="<?php echo $away_team ?>"/></div>
+<div class="club"><input name="hometeam" type="text" class="club_style" id="hometeam"  placeholder="Home Club" value="<?php if(isset($home_team)) { echo $home_team ;} ?>"/></div>
+<div class="club"><input name="awayteam" type="text" class="club_style" id="awayteam"  placeholder="Away Club" value="<?php if(isset($away_team)) {echo $away_team ;}?>"/></div>
 
 
 </div>

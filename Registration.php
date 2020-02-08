@@ -1,53 +1,92 @@
 <?php
 ob_start();
-require_once('connect.php');
-//instancetiate the class or create the object of the class
-$obj = new Connect;
-$obj->Mysql();
-	
-	//if all the condition is set submit to the database
-	if(isset($_POST['Submit'])) {
-		$username = mysql_real_escape_string( $_POST['Username']);
-		$Pwd = mysql_real_escape_string($_POST['password1']);
-		$confirm_Pwd = mysql_real_escape_string( $_POST['Confirm_pwd']);
-		$email = mysql_real_escape_string($_POST['Email']);
-		$sname = mysql_real_escape_string($_POST['Sname']);
-		$name = mysql_real_escape_string($_POST['Name']);
-		$day = $_POST['day'];
-		$month = $_POST['month'];
-		$year = $_POST['year'];
-		$date= $day.'/'.$month.'/'.$year;//concatenate day/month/year
-		$gender = mysql_real_escape_string($_POST['gender']);
-		$contry = $_POST['country'];
-		$address = mysql_real_escape_string($_POST['Address']);
-		$city = mysql_real_escape_string($_POST['City']);
-		$state = mysql_real_escape_string($_POST['State']);
-		$mobile = mysql_real_escape_string($_POST['Mobile']);	
-		$check = $_POST['agree'];	
-		
-	$user_id= uniqid(rand(100000,999999));
-	$validate= mysql_query("select * from registration where User_id='$user_id'",$obj->connect) or die('could not select'.mysql_error());
-	$num= mysql_num_rows($validate);
-	
-	if($num>0)
-	{
-		$user_id-= 1;
-		
-		}
-		elseif($num==0)
-		{
-	
-	$insert= mysql_query("INSERT INTO registration
-	 
-	
-	values('','$user_id','$username','$Pwd','$confirm_Pwd','$email','$sname','$name','$date','$gender','$contry','$address','$city','$state','$mobile','$check','')",$obj->connect) or die(''.mysql_error());
-	
 
-  header("location:welcome registration.php?= $user_id ");
-		}
-}
-// mysql_close();
+require_once "connect.php";
+		//a function to createuser account 
+		function CreateUser() {
+			//instantiate the class
+			$obj = DatabaseConnect::getInstance();
+			
+			//if all the condition is set submit to the database
+			if(isset($_POST['Submit'])) {
+				//prevent SQL injection
+				$username = $obj->secureTxt( $_POST['Username']);
+				$Pwd = $obj->securePwd(crypt($_POST['password1']));
+				$confirm_Pwd = $obj->securePwd(crypt( $_POST['Confirm_pwd']));
+				$email = $obj->secureTxt($_POST['Email']); 
+				$sname = $obj->secureTxt($_POST['Sname']);
+				$name = $obj->secureTxt($_POST['Name']);
+				$day = $obj->secureTxt($_POST['day']);
+				$month = $obj->secureTxt($_POST['month']);
+				$year = $obj->secureTxt($_POST['year']);
+				$date= $day.'/'.$month.'/'.$year;//concatenate day/month/year
+				$gender = $obj->secureTxt($_POST['gender']);
+				$contry = $obj->secureTxt($_POST['country']);
+				$address = $obj->secureTxt($_POST['Address']);
+				$city = $obj->secureTxt($_POST['City']);
+				$state = $obj->secureTxt($_POST['State']);
+				$mobile = $obj->secureTxt($_POST['Mobile']);	
+				$check = $obj->secureTxt($_POST['agree']);	
+				
+				$user_id= uniqid(rand(100000,999999));
+				$query = $obj->connect->prepare("SELECT * FROM registration WHERE User_ID ='$user_id'");
+				$query->bindParam(':User_id', $user_id);
+				$query->bindParam(':Username', $username);
+				$query->bindParam(':password1', $Pwd);
+				$query->bindParam(':Confirm_pwd', $confirm_Pwd);
+				$query->bindParam(':Email', $email);
+				$query->bindParam(':Sname', $sname);
+				$query->bindParam(':Name', $name);
+				$query->bindParam(':day', $day);
+				$query->bindParam(':month', $month);
+				$query->bindParam(':year', $year);
+				$query->bindParam(':gender', $gender);
+				$query->bindParam(':country', $contry);
+				$query->bindParam(':Address', $address);
+				$query->bindParam(':City', $city);
+				$query->bindParam(':State', $state);
+				$query->bindParam(':Mobile', $mobile);
 
+				$query->execute();
+
+				
+				//check if there a record
+				if($query->rowCount() > 0)
+				{
+					$user_id-= 1;
+					
+					}
+					elseif($query->rowCount() ==0)
+					{
+				
+				//submit to the database
+				$insert= $obj->connect->prepare("INSERT INTO registration(Id,Username,
+				User_ID,Password,ConfirmPwd,Email,Surname,Name,DOB,Gender,Country,Address,City,State,Mobile,agree)
+				
+				VALUES('','$username','$user_id','$Pwd','$confirm_Pwd','$email','$sname','$name',
+				'$date','$gender','$contry','$address','$city','$state','$mobile','$check')");
+
+				$result = $insert->execute();
+				//var_dump($result);
+				if($result == true){
+					echo '<script>
+				 	var msg = "Successfully Submitted";
+				 	alert(msg);
+					</script>';
+				}
+				
+
+			header("Location:welcome registration.php?user_id= $user_id ");
+					}
+      }
+      
+      		
+
+
+    }
+    
+		//execute the function
+		$funct= CreateUser();
 
 
 ?>
@@ -116,7 +155,8 @@ body {
 <div class="small_1">Share</div>
 
 <div class="container">
-<form action="" method="post" enctype="multipart/form-data">
+  <!--form--->
+<form action="" method="POST" enctype="multipart/form-data">
 <div class="open_acct">Open an account</div>
 <div class="leftside">
 <div class="clarify">Please in order to access all services you must complete fields (marked with *) and personal details must be correct in order to Deposite and Withdrawl Funds</div>

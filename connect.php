@@ -10,22 +10,23 @@ class DatabaseConnect{
 	public $txt, $pwd;
 	
 	//declare a function construct
-	function __construct() {
+	public function __construct() {
+		
 		try {
 			$this->connect = new PDO('mysql:host=127.0.0.1;dbname=Betting','root','');
-			} catch (PDOException $e) {
+			}catch (PDOException $e) {
 				die($e->getMessage());
 			 
 		}
 		
 	}	
 	//a method to instantiate the class
-	public function getInstance() {
+	public static function getInstance() {
 		//we use self to access the property $_instance then we return the output
 		if(isset(self::$_instance)){
 			return self::$_instance;
 		}
-		//we use self to call the property i the same class
+		//we use self to call the property in the same class
 		self::$_instance = new DatabaseConnect();
 		return self::$_instance;
 	}
@@ -63,13 +64,3 @@ class DatabaseConnect{
 	
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-</head>
-
-<body>
-</body>
-</html>

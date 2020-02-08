@@ -1,28 +1,70 @@
 <?php
-	require('Admin connect.php');
+		session_start();
+
+		ob_start();
+
+		require_once "Admin connect.php";
+
+		/*
+		* check if the session is set and not empty
+		* assign the session to a variable
+		*/
+		if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
+			$user_session = $_SESSION['Username'];
+				
+		}else {
+			//redirect the user 
+			header("Location:Admin login.php");
+		}
+
+		
+		
+?>
+<?php
+	//create an instance of the object
+	$call_db = DatabaseConnect::getInstance();
 	
-	$result= mysql_query("select * from livematches order by match_id desc") or die ('could not select'.mysql_error());
-	$count= 0;
-	while($row = mysql_fetch_array($result,MYSQL_ASSOC))
+	$query = $call_db->connect->prepare("SELECT * FROM livematches ORDER BY match_id DESC");
+	$query->execute();
+	
+	
+	$count = $query->rowCount();
+	while($result = $query->fetch(PDO::FETCH_ASSOC))
 	{
-		$id[]= $row['match_id'];
-		$league_name[]= $row['leaguename'];
-		$hometeam[]= $row['hometeam'];
-		$awayteam[]= $row['awayteam'];
+		$id[]= $result['match_id'];
+		$league_name[]= $result['leaguename'];
+		$hometeam[]= $result['hometeam'];
+		$awayteam[]= $result['awayteam'];
 		$count ++;
+		
+
+		
+		
 	 }
+
 	 // to delete from database
 	 if(isset($_GET['match_id']))// if it is ok get the ID in the database
 	 {
 		 $delete=$_GET['match_id'];
-		 
-		 $del_query=mysql_query("delete from livematches where match_id='$delete'") or die (''.mysql_error());
-		 while($row= mysql_fetch_array($del_query,MYSQL_ASSOC)) 
+		 //prepare the query
+		 $del_query = $call_db->connect->prepare("DELETE FROM livematches WHERE match_id='$delete'");
+		 $del_result =  $del_query->execute();
+
+
+		 while($del_result = $del_query->fetch(PDO::FETCH_ASSOC)) 
 		 {
-		 	$del_id=$row['match_id'];
-			$home=$row['hometeam'];
-			$away=$row['awayteam'];
+		 	$del_id=$del_result['match_id'];
+			$home=$del_result['hometeam'];
+			$away=$del_result['awayteam'];
 					 
+		 }
+
+		 if($del_result == true) {
+			echo '<script>
+				var msg = "Successfully Deleted";
+				alert(msg);
+			
+				</script>';
 		 }
 		
 			
@@ -86,15 +128,16 @@ a:active {
     <td width="47" bgcolor="#C61C1C">View</td>
     <td width="47" bgcolor="#C61C1C">Delete</td>
   </tr>
-  <?php for( $a=0; $a<$count; $a++) {?>
+  <?php for( $a= 0; $a < $count ; ++$a ) {  ?>
+	
   <tr>
-    <td bgcolor="#278B47"><?php echo $id[$a]?></td>
-    <td bgcolor="#FFFFFF"><?php echo $league_name[$a]?></td>
-    <td bgcolor="#FFFFFF"><?php echo $hometeam[$a]?></td>
-    <td bgcolor="#FFFFFF"><?php echo $awayteam[$a] ?></td>
-    <td bgcolor="#CCCCCC"><a href="Edit live match.php?match_id=<?php echo $id[$a]?>">Edit</a></td>
-    <td bgcolor="#CCCCCC"><a href="blank.php?match_id=<?php echo $id[$a]?>">View</a></td>
-    <td bgcolor="#CCCCCC"><a href="view live match.php?match_id=<?php echo $id[$a]?>">Delete</a></td>
+    <td bgcolor="#278B47"><?php if(isset($id[$a])) {echo $id[$a];}?></td>
+    <td bgcolor="#FFFFFF"><?php if(isset($league_name[$a])) { echo $league_name[$a];}?></td>
+    <td bgcolor="#FFFFFF"><?php if(isset($hometeam[$a])) { echo $hometeam[$a]; }?></td>
+    <td bgcolor="#FFFFFF"><?php if(isset($awayteam[$a])) {echo $awayteam[$a] ;}?></td>
+    <td bgcolor="#CCCCCC"><a href="Edit live match.php?match_id=<?php if(isset($id[$a])) { echo $id[$a]; }?>">Edit</a></td>
+    <td bgcolor="#CCCCCC"><a href="blank.php?match_id=<?php if(isset($id[$a])) { echo $id[$a]; }?>">View</a></td>
+    <td bgcolor="#CCCCCC"><a href="view live match.php?match_id=<?php if(isset($id[$a])) { echo $id[$a]; }?>">Delete</a></td>
     </tr>
     <?php ;}?>
 </table>

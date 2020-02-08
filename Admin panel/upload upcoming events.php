@@ -1,56 +1,100 @@
 <?php
-	require_once('Admin connect.php');
-	
-	//restrict the user from accessing this page without login
-	if(isset($_COOKIE['user'])) $cook = $_COOKIE['user']; else{header('location:Admin login.php');}
-	
-	if(isset($_POST['submit']))
-	{
+		session_start();
+
+		ob_start();
+
+		require_once "Admin connect.php";
+
+		/*
+		* check if the session is set and not empty
+		* assign the session to a variable
+		*/
+		if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
+			$user_session = $_SESSION['Username'];
+				
+		}else {
+			//redirect the user 
+			header("Location:Admin login.php");
+		}
+
 		
-	$time = $_POST['time'];
-	$day= $_POST["day"];						// day
-	$month= $_POST['month'];					//month
-	$year= $_POST['year'];						//year
-	$date= $year.' '.$month.' '.$day;			//concatenate
-	$home_win = $_POST['homewin'];
-	$draw = $_POST['draw'];
-	$away_win = $_POST['awaywin'];
-	$home_draw = $_POST['homedraw'];
-	$double = $_POST['doublechance'];
-	$away_draw = $_POST['awaydraw'];
-	$over = $_POST['over'];
-	$under = $_POST['under'];
-	$GG = $_POST['GoalGoal'];
-	$NG = $_POST['NoGoal'];
-	$club_home = $_POST['hometeam'];
-	$club_away = $_POST['awayteam'];
+		
+?>
+<?php
+	
+	//create an instance of the object
+	$call_db = DatabaseConnect::getInstance();
+	
+if(isset($_POST['submit']))
+{
+	//prevent sql injection
+	$time = $call_db->secureTxt($_POST['time']);
+	$day= $call_db->secureTxt($_POST["day"]);						// day
+	$month= $call_db->secureTxt($_POST['month']);					//month
+	$year= $call_db->secureTxt($_POST['year']);						//year
+	$date= $year.' '.$month.' '.$day;								//concatenate
+	$home_win = $call_db->secureTxt($_POST['homewin']);
+	$draw = $call_db->secureTxt($_POST['draw']);
+	$away_win = $call_db->secureTxt($_POST['awaywin']);
+	$home_draw = $call_db->secureTxt($_POST['homedraw']);
+	$double = $call_db->secureTxt($_POST['doublechance']);
+	$away_draw = $call_db->secureTxt($_POST['awaydraw']);
+	$over = $call_db->secureTxt($_POST['over']);
+	$under = $call_db->secureTxt($_POST['under']);
+	$GG = $call_db->secureTxt($_POST['GoalGoal']);
+	$NG = $call_db->secureTxt($_POST['NoGoal']);
+	$club_home = $call_db->secureTxt($_POST['hometeam']);
+	$club_away = $call_db->secureTxt($_POST['awayteam']);
 	
 	$match_id= rand(100,999);
-	$valid= mysql_query("SELECT * FROM upcomingevents 
-						WHERE match_id = '$match_id'",$connect) 
-						or die('could not select'.mysql_error());
-						
-	$num= mysql_num_rows($valid);
+	$query = $call_db->connect->prepare("SELECT * FROM upcomingevents WHERE match_id = '$match_id'");
 	
-	if($num >0)
+	//bindparameters with form placeholders
+	$query->bindParam(':match_id', $match_id, PDO::PARAM_INT);
+	//execute the query
+	$result = $query->execute();
+
+	
+	if($query->rowCount() > 0)
 	{
-	$match_id= -2;
+		$match_id= -2;
 	}
-	elseif($num==0)
+	elseif($query->rowCount() ==0)
 		{
 		
-$insert= "INSERT INTO upcomingevents
-			values('$match_id','$time','$date','$home_win','$draw','$away_win','$home_draw','$double','$away_draw','$over','$under','$GG',
-			'$NG','$club_home','$club_away')";
-			
-$query= mysql_query($insert,$connect) or die('could not insert values'.mysql_error($connect));
+	$query = $call_db->connect->prepare("INSERT INTO upcomingevents()
+				values('$match_id','$time','$date','$home_win','$draw','$away_win','$home_draw','$double','$away_draw','$over','$under','$GG',
+				'$NG','$club_home','$club_away')");
+				
 	
+
+	//bindparameters
+	$query->bindParam('match_id', $match_id, PDO::PARAM_STR);
+	$query->bindParam(':time', $time, PDO::PARAM_STR);
+	$query->bindParam(':date', $date, PDO::PARAM_STR);
+	$query->bindParam(':homewin', $home_win, PDO::PARAM_STR);
+	$query->bindParam(':draw', $draw, PDO::PARAM_STR);
+	$query->bindParam('awaywin', $away_win, PDO::PARAM_STR);
+	$query->bindParam(':homedraw', $home_draw, PDO::PARAM_STR);
+	$query->bindParam(':doublechance', $double, PDO::PARAM_STR);
+	$query->bindParam(':awaydraw', $away_draw, PDO::PARAM_STR);
+	$query->bindParam(':over', $over, PDO::PARAM_STR);
+	$query->bindParam(':under', $under, PDO::PARAM_STR);
+	$query->bindParam(':GoalGoal', $GG, PDO::PARAM_STR);
+	$query->bindParam(':NoGoal', $NG, PDO::PARAM_STR);
+	$query->bindParam(':hometeam', $club_home, PDO::PARAM_STR);
+	$query->bindParam(':awayteam', $club_away, PDO::PARAM_STR);
+	
+	$result  = $query->execute();
 		
-	if($query){echo '<script type="text/javascript">
-						var msg = "successfully inserted upcomig matches";
-						alert(msg);
-						</script>';}
-		}
+			
+			if($result == true) {
+				echo '<script type="text/javascript">
+								var msg = "successfully inserted upcomig matches";
+								alert(msg);
+								</script>';
+			}
+		}//elseif
 	
 	}
 	

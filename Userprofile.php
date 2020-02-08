@@ -1,86 +1,23 @@
 <?php
-require('connect.php');
+        session_start();
+        require_once "connect.php";
 
-//instance of a class is known as obj
-$obj = new Connect;
-$obj->Mysql();
+        //instance of a class is known as obj
+        $obj =  DatabaseConnect::getInstance();
 
- if(isset($_COOKIE['user']))  $logid= $_COOKIE['user']; else{header('Location:index.php');}
- 
-
-
- $query2= mysqli_query($obj->connect,"SELECT * from registration
- 						WHERE Username='$logid'")or die('could not select'.mysqli_error($obj->connect));
- while($row= mysqli_fetch_array($query2,MYSQL_ASSOC))
- 	{
-	 
-	 $uid= $row['User_id'];
-	 $user= $row['Sname'];
-	 $name= $row['Name'];
-
- 
-	
-}
-
-$query = mysqli_query($obj->connect,"SELECT * FROM livematches order by match_id desc limit 0,5") or die('could not select'.mysqli_error($obj->connect));
-		  
-		  $count=0;
-		  while($value= mysqli_fetch_array($query,MYSQL_ASSOC))
-		  		{
-					
-				$match_id[]= $value['match_id'];
-				$category[]= $value['category'];
-				$league[]= $value['leaguename'];
-				$country[]= $value['country'];
-				$home[]= $value['home'];
-				$draw[]= $value['draw'];
-				$away[]= $value['away'];
-				$over[]= $value['over'];
-				$under[]= $value['under'];
-				$score[]= $value['score'];
-				$score_1[]= $value['score1'];
-				$time[]= $value['time'];
-				$club_home[]= $value['hometeam'];
-				$club_away[]= $value['awayteam'];
-				$count++;
-															
-				}
-		  
-$query_2= mysqli_query($obj->connect,"SELECT * FROM upcomingevents 
-						order by match_id desc limit 0,15 ") or die('could not select'.mysqli_error($obj->connect));
-						
-			$rows=0;
-			while($hold= mysqli_fetch_array($query_2,MYSQL_ASSOC))
-			{
-				
-			$match_id[]=$hold['match_id'];
-			$tm[]=$hold['time'];
-			$date[]=$hold['date'];
-			$hw[]=$hold['homewin'];
-			$drw[]=$hold['draw'];
-			$aw[]=$hold['awaywin'];
-			$hd[]=$hold['homedraw'];
-			$dc[]=$hold['doublechance'];
-			$ad[]=$hold['awaydraw'];
-			$ov[]=$hold['over'];
-			$un[]=$hold['under'];
-			$GG[]=$hold['GoalGoal'];
-			$NG[]=$hold['NoGoal'];
-			$hteam[]=$hold['hometeam'];
-			$ateam[]=$hold['awayteam'];
-			
-			$rows++;
-			
-			
-			}
-			
-	//$search = mysqli_query("Select * from livematches WHERE country LIKE'g%'",$connect) or die('could not find'.mysqli_error());
-		
- 	
-
- 
- 
+        /*
+		* check if the session is set and not empty
+		* assign the session to a variable
+		*/
+		if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) 
+			$user_session = $_SESSION['Username'];
+				 //var_dump($_SESSION['Username']); exit();
+		else {
+			//redirect the user 
+			//header("Location:index.php");
+		}
 ?>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -140,9 +77,9 @@ ga('send', 'pageview');
     </div>
    	<div class="sign_in">
     
-    <div class="user_box"><?php echo $uid; ?></div>
-    <div class="user_box"><?php echo $user; ?></div>
-    <div class="user_box"><?php echo $name; ?></div>
+    <div class="user_box"><?php /* if(isset($uid))*/ echo $uid; ?></div>
+    <div class="user_box"><?php /*if(isset($user))*/ echo $user; ?></div>
+    <div class="user_box"><?php /*if(isset($name))*/ echo $name; ?></div>
     <div class="money_box">
     <div class="user_box">
     <form action="" method="post" enctype="multipart/form-data">
@@ -193,6 +130,89 @@ ga('send', 'pageview');
 <div class="social_box"><img src="images/images.png" width="30" height="30" /></div>
 <div class="small">Like</div>
 <div class="small_1">Share</div>
+
+    
+<?php
+     
+
+     $query1 = $obj->connect->prepare("SELECT * from registration
+                             WHERE Username = '$user_session' ");
+
+     $query1->execute();
+
+        
+    while ($row = $query1->fetchAll(PDO::FETCH_ASSOC)) {
+        $uid= $row['User_ID'];
+          $user= $row['Surname'];
+          $name= $row['Name'];
+    }  
+
+          
+         
+         
+      
+
+
+     $query = $obj->connect->prepare("SELECT * FROM livematches ORDER by match_id desc limit 0,5");            
+              $count=0;
+
+     $query->execute();
+
+             while ($value= $query->fetch(PDO::FETCH_ASSOC)) {
+                         
+                     $match_id[]= $value['match_id'];
+                     $category[]= $value['Category'];
+                     $league[]= $value['leaguename'];
+                     $country[]= $value['country'];
+                     $home[]= $value['home'];
+                     $draw[]= $value['draw'];
+                     $away[]= $value['away'];
+                     $over[]= $value['over'];
+                     $under[]= $value['under'];
+                     $score[]= $value['score'];
+                     $score_1[]= $value['score1'];
+                     $time[]= $value['time'];
+                     $club_home[]= $value['hometeam'];
+                     $club_away[]= $value['awayteam'];
+                      $count++;
+                                                                 
+                     }
+             
+     $query_2= $obj->connect->prepare("SELECT * FROM upcomingevents 
+                             order by match_id desc limit 0,15 ");
+     $query_2->execute();
+                             
+                 $rows=0;
+                 while($hold= $query_2->fetch(PDO::FETCH_ASSOC))
+                 {
+                     
+                 $match_id[]=$hold['match_id'];
+                 $tm[]=$hold['time'];
+                 $date[]=$hold['Date_created'];
+                 $hw[]=$hold['homewin'];
+                 $drw[]=$hold['draw'];
+                 $aw[]=$hold['awaywin'];
+                 $hd[]=$hold['homedraw'];
+                 $dc[]=$hold['doublechance'];
+                 $ad[]=$hold['awaydraw'];
+                 $ov[]=$hold['over'];
+                 $un[]=$hold['under'];
+                 $GG[]=$hold['GoalGoal'];
+                 $NG[]=$hold['NoGoal'];
+                 $hteam[]=$hold['hometeam'];
+                 $ateam[]=$hold['awayteam'];
+                 
+                 $rows++;
+                 
+                 
+                 }
+                 
+         $search = $obj->connect->query("SELECT * FROM livematches WHERE country LIKE 'g%' ");            
+  
+
+
+
+?>
 
 <div class="container">
 <div class="left_side">
@@ -400,7 +420,7 @@ match_id=<?php echo $match_id[$a]?>&home=<?php echo $home[$a];?>&hometeam=<?php 
 
 </div>
 </div>  
-<div class="right_side" id="Betslip"></div>
+<!-- <div class="right_side" id="Betslip"></div> -->
 
 
 <div class="footer">

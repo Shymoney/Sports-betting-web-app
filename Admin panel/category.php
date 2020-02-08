@@ -1,23 +1,26 @@
 <?php
+		session_start();
 
-require('Admin connect.php');
+		ob_start();
 
-if(isset($_POST['submit'])){
-	
-	$category= $_POST['category'];
+		require_once "Admin connect.php";
 
+		/*
+		* check if the session is set and not empty
+		* assign the session to a variable
+		*/
+		if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
+			$user_session = $_SESSION['Username'];
+				
+		}else {
+			//redirect the user 
+			header("Location:Admin login.php");
+		}
 
-$query= "INSERT INTO category
-		values('','$category')";
 		
-mysql_query($query,$connect) or die('could not insert'.mysql_error($connect));
-if($query){echo '<script type="text/javascript">
-				var msg="Successfully inserted";
-				alert(msg);
-				</script>';}
-}
-
+		
 ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -59,13 +62,41 @@ a:visited {
 <div class="cont_box"><a href="View reg users.php">View Registered User</a></div>
 <div class="cont_box"><a href="#">Select Sports Category</a></div>
 <div class="cont_box"><a href="#">Select Sports Category</a></div>
-
 </div>
+
+<?php
+		//instantiate the dbconnect class
+		$call_db = DatabaseConnect::getInstance();
+
+		if(isset($_POST['submit'])){
+			
+			$category= $call_db->secureTxt($_POST['category']);
+
+			$query= $call_db->connect->query("INSERT INTO category(Cat_id,CategoryName) VALUES('','$category')");
+			
+			//bind parameters
+			$query->bindParam(':category',$category, PDO::PARAM_STR);
+					
+			//execute query
+			$result = $query->execute();
+		
+			//output a message
+			if($query == true ){
+				echo '<script type="text/javascript">
+							var msg="Successfully inserted";
+							alert(msg);
+							</script>';
+			}
+		}
+
+?>
+
 
 <div class="right">
 <div class="category">
 <div class="sport_box">Sports Category</div>
-<div class="long"><input name="category" type="text" class="long_style" id="category"  placeholder="select your sport category"/></div>
+<div class="long">
+	<input name="category" type="text" class="long_style" id="category" placeholder="select your sport category" required /></div>
 </div>
 <div class="category">
   <div class="submit"><input name="submit" type="submit" value="Submit" id="submit" /></div>

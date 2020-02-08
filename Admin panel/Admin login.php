@@ -1,116 +1,81 @@
-<?php
-ob_start();
+<?php 
+	session_start();
+ 	ob_start();
+ 
+/* here we include our "Admin connect page" were the database is selected*/
+ require_once "Admin connect.php";
+	
+ 
 
-/* here we integrate our "Admin connect page" were the database is selected*/
- require_once('Admin connect.php');
+class AdminLogin extends DatabaseConnect {
 
-//if(isset($_POST['Submit'])){
-//here i reference the object Connect
-	$obj = new Connect;
-	$obj->__constructor();	
 
-class Login {
-	//i want to try and login using a class.
-	 var $u;
-	 var $p;
-	 var $p2;
-	 
+	//object property decleration
+	 protected $u;
+	 protected $p;
+	 protected $p2;
+
 	
 	//a function handles the user input
-public function handle_login() {
-	//
-	if(isset($_POST['Submit'])){
-		
-		$this->u = $_POST['username'];
-		$this->p = $_POST['password1'];
-		$this->p2 = $_POST['password2'];
+	public function handle_login() {
+		//create an instance of the object
+		$call_db = DatabaseConnect::getInstance();
 		
 		
- $login = mysql_query("SELECT * FROM adminlogin WHERE username='$this->u' && password1='$this->p' && password2='$this->p2'") or die('could not select'.mysql_error());
- 
-		//check for the number of rows of our login
-		$num = mysql_num_rows($login);
-		
-		//now we set our cookie
-		if($num > 0){
-	
-	setcookie('user',$this->u,time()+3600,'/');
-	header('Location:Upload live matches.php');
-	
-	}else{echo '<script type="text/javascript">
-	
-	var msg = "Wrong Username or Password";
-	alert(msg);
-	
-	</script>';	
-		
+
+		if(isset($_POST['Submit'])) {
+
+			//prevent SQL injection
+			$this->u = $call_db->secureTxt($_POST['username']);
+			$this->p = $call_db->securePwd($_POST['password1']);
+			$this->p2 =$call_db->securePwd($_POST['password2']);
 			
+			$login =$call_db->connect-> prepare("SELECT * FROM adminlogin WHERE Username=:username && Password = :password1 && ConfirmPassword = :password2 ");
+			
+			//bind paramters with input placeholders
+			$login->bindParam(':username',$this->u, PDO::PARAM_STR);
+			$login->bindParam(':password1', $this->p, PDO::PARAM_STR);
+			$login->bindParam(':password2',$this->p2, PDO::PARAM_STR);
+			
+			//execute the query
+			$result = $login->execute();
+			//var_dump($result); exit();
+			
+			//now we set our session
+			if($login->rowCount()  > 0){
+			
+			// fetch the data 
+			$session_data = $login->fetch(PDO::FETCH_ASSOC);
+						
+			// set session data
+			$_SESSION['Username'] = $session_data['Username'];
+			
+			//redirect after a successful login
+			header('Location:Upload live matches.php');
+			
+			 }else{
+				echo '<script type="text/javascript">
+					var msg = "Wrong Username or Password";
+					alert(msg);
+					</script>';	
 			}
 		
 		
-			}
-			
 		}
-	
-	}
-	//call the object and its method
-	$new = new Login;
-	$new->handle_login();
-	
-	
-//}
-/*
-if(isset($_POST['Submit']))
-{
-	$u= mysql_real_escape_string($_POST['username']);
-	// hashing the password using the sha1() && the crypt()
-	$p= ($_POST['password1']);	
-	$p2= ($_POST['password2']);
-	
-	$login = mysql_query("SELECT * FROM adminlogin WHERE username='$u' && password1='$p' && password2='$p2'",$obj)or die('could not select'.mysql_error()); 
-	
-	$num = mysql_num_rows($login);
-	/*
-	while($row= mysql_fetch_array($login,MYSQL_ASSOC))
-	{
-			$id=$row['LoginId'];
-			$useraname=$row['username'];
-			$password=$row['password1'];
-			$password_two=$row['password2'];
+
 		
+			
 	}
-	*/		
-/*
-//set cookie
-if($num > 0){
-	setcookie('user',$u,time()+3600,'/');
-	header('Location:Upload live matches.php');
-	
-	}else{echo '<script type="text/javascript">
-	
-	var msg = "Wrong Username or Password";
-	alert(msg);
-	
-	</script>';}
-	
-	
-	
-	
 
+	
 }
-*/
-
+	//excute
+	$obj = new AdminLogin;
+	$obj->handle_login();
 	
+?>	
 
 
-?>
-
-<script type="text/javascript">
-/*
-			var msg= "Welcome Admin";
-			alert(msg);
-*/
-</script>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -186,7 +151,9 @@ body {
 <span class="confirmRequiredMsg">A value is required.</span><span class="confirmInvalidMsg">The values don't match.</span></span> 
 </div>
 
-<div class="submit_box"><input name="Submit" type="submit" class="stylesubmit" id="Submit" value="Login" /></div>
+<div class="submit_box">
+	<input name="Submit" type="submit" class="stylesubmit" id="Submit" value="Login" />
+</div>
 </form>
 </div>
 

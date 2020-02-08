@@ -1,134 +1,187 @@
 <?php
-
-ob_start();
-//connecting to our database
-require('connect.php');
-$obj = new Connect;
-$obj->Mysql();
+    session_start();
+    ob_start();
+    //connecting to our database
+    require_once "connect.php";
 
 
-if(isset($_POST['Submit']))
-	{
-		if(empty($_POST['Username'])){
-			
-			//print out a an error msg
-			echo '<script>
-					var msg = " Username Cannot be empty";
-					alert(msg);
-			
-				</script>';
-						
-		}else{
-			
-			$u= mysqli_real_escape_string($obj->connect,$_POST['Username']);
-		}
-	
-		if(empty($_POST['password1'])){
-			
-			//print out an error msg
-			echo '<script>
-					var msg = " Password Cannot be empty";
-					alert(msg);
-			
-				</script>';
-						
-		}else{
-			
-			$p= mysqli_real_escape_string($obj->connect,$_POST['password1']);
-		}
-		
-		
-//query the database
-$login= mysqli_query($obj->connect,"SELECT * 
-				FROM registration 
-				WHERE Username='$u' && Password='$p'") or die('could not login'.mysqli_error($obj->connect));
 
+    //a method to handle the select User username & password query
+    function SeleectAllUsers() {
+
+        //call the instance of the class
+        $obj =  DatabaseConnect::getInstance();
+
+        if(isset($_POST['Submit'])) {
+
+            //check if the username field is empty  
+            if(empty($_POST['Username'])) {
+                
+                //print out a an error msg
+                echo '<script>
+                        var msg = " Username Cannot be empty";
+                        alert(msg);
+                    </script>';
+                            return;
+            }else{
+                //query the database
+                $u = $obj->secureTxt($_POST['Username']);
+            }
+        
+            //check if password field is empty
+            if(empty($_POST['password1'])) {
+                
+                //print out an error msg
+                echo '<script>
+                        var msg = " Password Cannot be empty";
+                        alert(msg);
+                    </script>';
+                            return;
+            }else{
+                //query the database for the password
+                $p = $obj->securePwd($_POST['password1']);
+                
+            }
 		
-	$num= mysqli_num_rows($login); 
-	while($row= mysqli_fetch_array($login))
-		{	
-			$id=$row['REG_id'];
-			$user=$row['Username'];
-			$pwd=$row['password1'];
-			$confm=$row['ConfirmPwd'];
-			$view=$row['view'];
-		}
 		
-		
-			//this is where we set our cookies
-			if($num>0)
-	{
-		
-$sql= mysqli_query($obj->connect,"update registration set view=view+1") or die('could not update'.mysqli_error($obj->connect));
-							
-setcookie('user',$user,time()+3600,'/');
-header('location:Userprofile.php');
-				
-		}
-			
-			else{echo'<script type="text/javascript">
-						var msg="wrong username or password";
-						alert(msg);
-						</script>';}
-					
-	}
-						
-$query = mysqli_query($obj->connect,"SELECT * FROM livematches order by match_id desc limit 0,7") or die('could not select'.mysqli_error($obj->connect));
-		  
-		  $count=0;
-		  while($value= mysqli_fetch_array($query,MYSQLI_ASSOC))
+            //query the database
+            $login= $obj->connect->prepare("SELECT * 
+                            FROM registration 
+                            WHERE Username='$u' && Password='$p'");
+                //bind parameters            
+                $login->bindParam(':Username', $u );
+                $login->bindParam(':Password', $p); 
+            //execute query   
+            $login->execute();
+            
+            if($login->rowCount() > 0){
+            
+                while($row= $login->fetch(PDO::FETCH_ASSOC)) {
+                        
+                        $id=$row['User_ID'];
+                        $user=$row['Username'];
+                        $pwd=$row['password1'];
+                        $confm=$row['ConfirmPwd'];
+                        $view=$row['view'];
+                    }
+                
+                
+
+                
+                $query = $obj->connect->prepare("UPDATE registration SET view=view+1");
+                $query->execute();
+                                    
+                $_SESSION['Username'] = $row['Username'];
+                header('location:Userprofile.php');
+                                
+            }
+                            
+                    else{
+                            echo'<script type="text/javascript">
+                            var msg="wrong username or password";
+                                alert(msg);
+                                    </script>';
+                        }
+                    
+                        
+}
+    
+
+}   //here i execute the function
+    SeleectAllUsers();
+
+    // a function to handle livematches
+     //function SelectLiveMatches(){
+
+        //call the instance of the class
+        $obj =  DatabaseConnect::getInstance();
+
+        $query = $obj->connect->prepare("SELECT * FROM livematches order by match_id desc limit 0,7");
+        $query->execute();  
+          
+            //count the rows
+             $result =  0;
+            
+          while($value = $query->fetch(PDO::FETCH_ASSOC))
+          
 		  		{
 					
-				$match_id[]= $value['match_id'];
-				$category[]= $value['category'];
-				$league[]= $value['leaguename'];
-				$country[]= $value['country'];
-				$home[]= $value['home'];
-				$draw[]= $value['draw'];
-				$away[]= $value['away'];
-				$over[]= $value['over'];
-				$under[]= $value['under'];
-				$score[]= $value['score'];
-				$score_1[]= $value['score1'];
-				$time[]= $value['time'];
-				$club_home[]= $value['hometeam'];
-				$club_away[]= $value['awayteam'];
-				$count++;
-															
-				}
-		  
-$query_2= mysqli_query($obj->connect,"SELECT * FROM upcomingevents 
-						order by match_id desc limit 0,15 ") or die('could not select'.mysqli_error($obj->connect));
-						
-			$rows=0;
-			while($hold= mysqli_fetch_array($query_2,MYSQLI_ASSOC))
+                    $match_id[]= $value['match_id'];
+                    $category[]= $value['Category'];
+                    $league[]= $value['leaguename'];
+                    $country[]= $value['country'];
+                    $home[]= $value['home'];
+                    $draw[]= $value['draw'];
+                    $away[]= $value['away'];
+                    $over[]= $value['over'];
+                    $under[]= $value['under'];
+                    $score[]= $value['score'];
+                    $score_1[]= $value['score1'];
+                    $time[]= $value['time'];
+                    $club_home[]= $value['hometeam'];
+                    $club_away[]= $value['awayteam'];
+                    
+                    $result++;
+                    
+					// var_dump($result);										
+                }
+            
+                
+                //return true;
+
+   // }
+            //excute the function
+            //SelectLiveMatches();
+
+     //function SelectUpcomingEvent(){
+
+        //call the instance of the class
+        $obj =  DatabaseConnect::getInstance();
+
+        //select from the database
+        $query_2= $obj->connect->prepare("SELECT * FROM upcomingevents 
+                        order by match_id desc limit 0,15 ");
+        $query_2->execute();
+
+            //check the rows
+		// if($query_2->rowCount() > 0){
+            $count_2 = $query_2->rowCount();
+
+        
+			while($hold = $query_2->fetch(PDO::FETCH_ASSOC))
 			{
-				
-			$match_id[]=$hold['match_id'];
-			$tm[]=$hold['time'];
-			$date[]=$hold['date'];
-			$hw[]=$hold['homewin'];
-			$drw[]=$hold['draw'];
-			$aw[]=$hold['awaywin'];
-			$hd[]=$hold['homedraw'];
-			$dc[]=$hold['doublechance'];
-			$ad[]=$hold['awaydraw'];
-			$ov[]=$hold['over'];
-			$un[]=$hold['under'];
-			$GG[]=$hold['GoalGoal'];
-			$NG[]=$hold['NoGoal'];
-			$hteam[]=$hold['hometeam'];
-			$ateam[]=$hold['awayteam'];
+                    
+                $match_id[]=$hold['match_id'];
+                $tm[]=$hold['time'];
+                //$date[]=$hold['date'];
+                $hw[]=$hold['homewin'];
+                $drw[]=$hold['draw'];
+                $aw[]=$hold['awaywin'];
+                $hd[]=$hold['homedraw'];
+                $dc[]=$hold['doublechance'];
+                $ad[]=$hold['awaydraw'];
+                $ov[]=$hold['over'];
+                $un[]=$hold['under'];
+                $GG[]=$hold['GoalGoal'];
+                $NG[]=$hold['NoGoal'];
+                $hteam[]=$hold['hometeam'];
+                $ateam[]=$hold['awayteam'];
+                
+                
+                
 			
-			$rows++;
-			
-			
-			}
-			
-		
-		
-	mysqli_close($obj->connect);
-	
+            }
+        //}
+
+    //}
+        //execute the function
+        //SelectUpcomingEvent();
+
+
+   
+
+
+
 	
 
 ?>
@@ -232,46 +285,46 @@ body {
 	margin-bottom: 0px;
 }
 </style>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
-jQuery(document).ready(function(e) {
-    
-		$("#search").mouseover(function() {
-			$(this).css("background-color","#CCC")
-		$("#search").mouseout(function(){
-			$(this).css("background-color","#FFF")
-			
-					
-		});
-			
-	
-	});
-	
-	jQuery(".right_side").click(function(){
-		var div = $(".right_side")
-		div.animate({height:'300px',opacity:'0.4'},"slow");
-		div.animate({width:'300px',opacity:'0.8'},"slow");
-		div.animate({height:'100px',opacity:'0.4'},"slow");
-		div.animate({width:'100px',opacity:'0.8'},"slow");
-		div.animate({left:'100px'},"slow");
-		div.animate({fontSize:'3em'},"slow");
-		$(".right_side").stop();
-					
-		});
-	
-	jQuery(".short_box").mouseover(function(){
-		$(".short_box").css("background-color","#0F0").slideDown("slow");
-		});
-	
-	
-});
+    jQuery(document).ready(function(e) {
+        
+            $("#search").mouseover(function() {
+                $(this).css("background-color","#CCC")
+            $("#search").mouseout(function(){
+                $(this).css("background-color","#FFF")
+                
+                        
+            });
+                
+        
+        });
+        
+        jQuery(".right_side").click(function(){
+            var div = $(".right_side")
+            div.animate({height:'300px',opacity:'0.4'},"slow");
+            div.animate({width:'300px',opacity:'0.8'},"slow");
+            div.animate({height:'100px',opacity:'0.4'},"slow");
+            div.animate({width:'100px',opacity:'0.8'},"slow");
+            div.animate({left:'100px'},"slow");
+            div.animate({fontSize:'3em'},"slow");
+            $(".right_side").stop();
+                        
+            });
+        
+        jQuery(".short_box").mouseover(function(){
+            $(".short_box").css("background-color","#0F0").slideDown("slow");
+            });
+        
+        
+    });
 
 
-</script>
+</script> -->
 
 </head>
 
-<body bgcolor="#2A2E37" onLoad="">
+<body style="bgcolor:#2A2E37" onLoad="">
 <div class="wrapper">
   <div class="banner_box">
 <div class="logo_box"><img src="images/alabi logo.png" width="260" height="63"></div> 
@@ -458,18 +511,18 @@ jQuery(document).ready(function(e) {
     <div class="header">Live Matches</div>
     <div class="current_date"><?php echo "";?>Tuesday,5 October 2015</div>
 	
-    <?php for($a = 0; $a<$count; $a++){?>
+    <?php for($a = 0; $a < $result; $a++) { ?>
     	<div class="matches">	
 		<div class="head">
 		<div class="score_box">
-        	<div class="digits_box"><?php echo $score[$a]; ?></div>
-            <div class="digits_box1"><?php echo $score_1[$a];?></div>
-            <div class="minutes"><?php echo $time[$a] ;?></div>
+        	<div class="digits_box"><?php if(isset($score[$a])) { echo $score[$a]; }?></div>
+            <div class="digits_box1"><?php if(isset($score_1[$a])) { echo $score_1[$a]; }?></div>
+            <div class="minutes"><?php if(isset($time[$a])) { echo $time[$a] ; }?></div>
         </div>
         <div class="club_box">
-        <div class="club_match"><?php echo $club_home[$a] ;?></div>
-        <div class="club_match_1"><?php echo $club_away[$a]; ?></div>
-        <div class="league_type"><?php echo $league[$a];?> 	<?php echo'Code:'.$match_id[$a];?></div>
+        <div class="club_match"><?php if(isset($club_home[$a])) {echo $club_home[$a] ;} ?></div>
+        <div class="club_match_1"><?php if(isset($club_away[$a])) {echo $club_away[$a]; } ?></div>
+        <div class="league_type"><?php if(isset($league[$a])) {echo $league[$a];} ?> 	<?php if(isset($match_id[$a])) {echo'Code:'.$match_id[$a];  }?></div>
         </div> 
         <div class="header_row">
         	<div class="short_odds">1</div>
@@ -509,12 +562,12 @@ jQuery(document).ready(function(e) {
 		<div class="short">NG</div>
 		<div class="short">Others</div>
 </div>
-<?php for($y=0; $y<$rows; $y++) {?>
+<?php for($y=0; $y<$count_2; $y++) {?>
 <div class="matches">
-	<div class="time_box"><?php	echo $tm[$y];?></div>
+	<div class="time_box"><?php	if(isset($tm[$y])) {echo $tm[$y];}?></div>
 	<div class="long_box">
-    <div class="Mtch_date"><?php echo $hteam[$y];?>-<?php echo $ateam[$y];?></div>
-    <div class="Mtch_date_1"><?php echo $date[$y];?>  &nbsp;Code:<?php echo $match_id[$y];?></div>
+    <div class="Mtch_date"><?php if(isset($hteam[$y])) {echo $hteam[$y];}?> - <?php if(isset($ateam[$y])) { echo $ateam[$y]; }?></div>
+    <div class="Mtch_date_1"><?php if(isset($date[$y])) {echo $date[$y];}?>  &nbsp;Code:<?php if(isset($match_id[$y])) { echo $match_id[$y]; }?></div>
     </div>
     <div class="short_box" onMouseOver="" id="1"><?php echo $hw[$y];?></div>
     <div class="short_box" onMouseOver="" id="2"><?php echo $drw[$y];?></div>

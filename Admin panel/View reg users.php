@@ -1,21 +1,52 @@
 <?php
-	require('Admin connect.php');
-	
-	$reg_id= $_GET['REG_id'];
-	
-	$result= mysql_query("select * from registration order by REG_id desc",$connect) or die ('could not select'.mysql_error());
-	$count = 0;
-	while($row = mysql_fetch_array($result,MYSQL_ASSOC))
-	{
-		$user_id[]= $row['User_id'];
-		$name[]= $row['Name'];
-		$email[]= $row['Email'];
-		$count ++;
-		
-		
-	 }
+		session_start();
 
+		ob_start();
+
+		require_once "Admin connect.php";
+
+		/*
+		* check if the session is set and not empty
+		* assign the session to a variable
+		*/
+		if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
+			$user_session = $_SESSION['Username'];
+				
+		}else {
+			//redirect the user 
+			header("Location:Admin login.php");
+		}
+
+		
+		
 ?>
+<?php
+    //create of the object
+    $call_db = DatabaseConnect::getInstance();
+  
+    if(isset($_GET['User_ID'])) {
+
+        $user_id= $_GET['User_ID'];
+    
+      
+        $query = $call_db->connect->prepare("SELECT * FROM registration ORDER BY User_ID DESC");
+        $query->execute();
+
+
+        $count = $query->rowCount();
+        
+        while($row = $query->fetch(PDO::FETCH_ASSOC))
+        {
+          $user_id[]= $row['User_id'];
+          $name[]= $row['Name'];
+          $email[]= $row['Email'];
+          $count ++;
+          
+          
+        }
+    }
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -72,11 +103,11 @@ a:visited {
     <td width="39" bgcolor="#C61C1C">Edit</td>
     <td width="39" bgcolor="#C61C1C">Del</td>
   </tr>
-  <?php for($a=0; $a<$count; $a++) {?>
+  <?php for($a = 0 ; $a < $count ; $a++) { ?>
   <tr>
-    <td height="39" bgcolor="#FFFFFF"><?php echo $user_id[$a]?></td>
-    <td bgcolor="#FFFFFF"><?php echo $name[$a] ?></td>
-    <td bgcolor="#FFFFFF"><?php echo $email[$a] ?></td>
+    <td height="39" bgcolor="#FFFFFF"><?php if($user_id[$a]) { echo $user_id[$a] ;} ?></td>
+    <td bgcolor="#FFFFFF"><?php if(isset($name[$a])) { echo $name[$a]; }  ?></td>
+    <td bgcolor="#FFFFFF"><?php if(isset($email[$a])) { echo $email[$a]; } ?></td>
     <td bgcolor="#FFFFFF"><a href="#">View</a></td>
     <td bgcolor="#FFFFFF"><a href="#">Edit</a></td>
     <td bgcolor="#FFFFFF"><a href="#">Del</a></td>

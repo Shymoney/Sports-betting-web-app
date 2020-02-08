@@ -1,66 +1,7 @@
 <?php 
-require_once('connect.php');
+  session_start();
+  require_once "connect.php";
 
-//create the object of the class
-$obj = new Connect;
-$obj->Mysql("localhost","root","");
-
-if(isset($_POST['Submit']))
-	{
-		$u= $_POST['Username'];
-		$p= $_POST['password1'];
-
-		
-//query the database
-$login= mysql_query("SELECT * 
-				FROM registration 
-				WHERE Username='$u' && password1='$p'",$obj->connect) or die('could not login'.mysql_error());
-
-		
-	$num= mysql_num_rows($login); 
-	while($row= mysql_fetch_array($login))
-		{	
-			$id=$row['REG_id'];
-			$user=$row['Username'];
-			$pwd=$row['password1'];
-			$confm=$row['ConfirmPwd'];
-			$view=$row['view'];
-		}
-		
-		
-			//this is where we set our cookies
-			if($num>0)
-	{
-		
-$sql= mysql_query("update registration set view=view+1",$obj->connect) or die('could not update'.mysql_error());
-							
-setcookie('user',$user,time()+3600,'/');
-header('location:Userprofile.php');
-				
-		}
-			
-			else{echo '<script type="text/javascript">
-						var msg="wrong username or password";
-						alert(msg);
-						</script>';}
-						
-	}
-
-
-
-
-if(isset($_GET['User_id']))	
-	$id= $_GET['User_id'];
-	
-	$result= mysql_query("select * from registration",$obj->connect) or die ('could not select'.mysql_error());
-	$num= mysql_num_rows($result);
-	while($row = mysql_fetch_assoc($result))
-	{
-		$id2= $row['User_id'];
-		$username = $row['Username'];
-		
-	 }
-	
 ?>
 
 
@@ -94,8 +35,8 @@ body {
         <div class="button"><a href="#" title="Mobile">MOBILE</a></div>
     </div>
    	<div class="sign_in"><form action="" method="post" enctype="multipart/form-data">
-       			<div class="username"><input name="Username" type="text" class="stylelayout" id="Username" required="username" /></div>
-                <div class="pasword"><input name="password1" type="password" class="stylelayout" id="password1" required="password" /></div>
+       			<div class="username"><input name="Username" type="text" class="stylelayout" id="Username"  /></div>
+                <div class="pasword"><input name="password1" type="password" class="stylelayout" id="password1" /></div>
                 <div class="submit" title="Login"><input name="Submit" type="submit" class="stylesubmit" value="Login" /></div>            
         </form>
         <div class="forgot_pwd"><a href="Forgotten pwd.php">Password Forgotten?</a></div>
@@ -122,12 +63,122 @@ body {
 <div class="small_1">Share</div>
 
 <div class="container">
+	<?php
+
+			//call the instance of the class
+			$obj =  DatabaseConnect::getInstance();
+
+			if(isset($_POST['Submit'])) {
+
+				//check if the username field is empty  
+				if(empty($_POST['Username'])) {
+					
+					//print out a an error msg
+					echo '<script>
+							var msg = " Username Cannot be empty";
+							alert(msg);
+						</script>';
+						return;
+								
+				}else{
+					//query the database
+					$u = $obj->connect->quote($_POST['Username']);
+				}
+
+				//check if password field is empty
+				if(empty($_POST['password1'])) {
+					
+					//print out an error msg
+					echo '<script>
+							var msg = " Password Cannot be empty";
+							alert(msg);
+						</script>';
+						return;
+								
+				}else{
+					//query the database for the password
+					$p = $obj->securePwd($_POST['password1']);
+				}
+
+
+				//query the database
+				$login= $obj->connect->prepare("SELECT * 
+								FROM registration 
+								WHERE Username=$u && Password=$p ");
+					//bind parameters            
+					$login->bindParam(':Username', $u );
+					$login->bindParam(':Password', $p); 
+				//execute query   
+				$login->execute();
+				
+				
+				if($login->rowCount() > 0){
+				
+					while($row= fetch(PDO::FETCH_ASSOC)) {
+							
+							$id=$row['User_ID'];
+							$user=$row['Username'];
+							$pwd=$row['password1'];
+							$confm=$row['ConfirmPwd'];
+							$view=$row['view'];
+						}
+					
+					
+
+					
+					$query = $obj->connect->prepare("UPDATE registration SET view=view+1");
+					$query->execute();
+										
+					$_SESSION['Username'] = $row['Username'];
+					header('location:Userprofile.php');
+									
+				}
+								
+						else{
+								echo'<script type="text/javascript">
+								var msg="wrong username or password";
+									alert(msg);
+										</script>';
+							}
+						
+							
+			}
+
+
+
+		 if(isset($_GET['user_id'])) {
+			//var_dump($_REQUEST['user_id']);
+				$id = $_GET['user_id'];
+				//var_dump( $id); exit();
+					
+				 $sql= $obj->connect->prepare("SELECT * FROM registration WHERE User_ID = $id ");
+				  $sql->execute();
+					//var_dump($sql); exit();
+				
+				
+				 while ($hold = $sql->fetch(PDO::FETCH_ASSOC)) :
+				 	
+							$fetch_id = $hold['Id'];
+							$u_id = $hold['User_ID'];
+							$u_name =$hold['Username'];
+						
+				 endwhile;
+			 
+			}
+
+
+
+	
+	
+	
+	
+	?>
 
 <div class="open_acct">Open an account</div>
 <div class="leftside">
 <div class="reg_cmplt_msg">
 	<span>Registration Complete!</span><br>
-    <span>Hi,<?php echo ucwords($username); ?> your user id is:<?php echo $id2; ?></span></p>
+    <span>Hi,<?php echo $u_name; ?> your user id is:<?php  echo $_GET['user_id'];   ?></span></p>
 	<p>You are now ready to start playing and winning. <br>
 	To get started with AlabiBet, log-in using your username and password.</p>
 	<p>Good luck and have fun!</p>

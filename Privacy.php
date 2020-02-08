@@ -1,47 +1,89 @@
 <?php
+	session_start();
+		require_once "connect.php";
 
-require_once('connect.php');
+		function SeleectAllUsers() {
 
-if(isset($_POST['Submit']))
-	{
-		$u= $_POST['Username'];
-		$p= $_POST['password1'];
-
-		
-//query the database
-$login= mysql_query("SELECT * 
-				FROM registration 
-				WHERE Username='$u' && password1='$p'",$connect) or die('could not login'.mysql_error());
-
-		
-	$num= mysql_num_rows($login); 
-	while($row= mysql_fetch_array($login))
-		{	
-			$id=$row['REG_id'];
-			$user=$row['Username'];
-			$pwd=$row['password1'];
-			$confm=$row['ConfirmPwd'];
-			$view=$row['view'];
-		}
-		
-		
-			//this is where we set our cookies
-			if($num>0)
-	{
-		
-$sql= mysql_query("update registration set view=view+1",$connect) or die('could not update'.mysql_error());
-							
-setcookie('user',$user,time()+3600,'/');
-header('location:Userprofile.php');
-				
-		}
+			//call the instance of the class
+			$obj =  DatabaseConnect::getInstance();
+	
+			if(isset($_POST['Submit'])) {
+	
+				//check if the username field is empty  
+				if(empty($_POST['Username'])) {
+					
+					//print out a an error msg
+					echo '<script>
+							var msg = " Username Cannot be empty";
+							alert(msg);
+						</script>';
+								
+				}else{
+					//query the database
+					$u = $obj->connect->quote($_POST['Username']);
+				}
 			
-			else{echo '<script type="text/javascript">
-						var msg="wrong username or password";
-						alert(msg);
-						</script>';}
+				//check if password field is empty
+				if(empty($_POST['password1'])) {
+					
+					//print out an error msg
+					echo '<script>
+							var msg = " Password Cannot be empty";
+							alert(msg);
+						</script>';
+								
+				}else{
+					//query the database for the password
+					$p = $obj->connect->quote($_POST['password1']);
+				}
+			
+			
+				//query the database
+				$login= $obj->connect->prepare("SELECT * 
+								FROM registration 
+								WHERE Username='$u' && Password='$p'");
+					//bind parameters            
+					$login->bindParam(':Username', $u );
+					$login->bindParam(':Password', $p); 
+				//execute query   
+				$login->execute();
+				
+				if($login->rowCount() > 0){
+				
+					while($row= fetch(PDO::FETCH_ASSOC)) {
+							
+							$id=$row['REG_id'];
+							$user=$row['Username'];
+							$pwd=$row['password1'];
+							$confm=$row['ConfirmPwd'];
+							$view=$row['view'];
+						}
+					
+					
+	
+					
+					$query = $obj->connect->prepare("update registration set view=view+1");
+					$query->execute();
+										
+					$_SESSION['Username'] = $row['Username'];
+					header('location:Userprofile.php');
+									
+				}
+								
+						else{
+								echo'<script type="text/javascript">
+								var msg="wrong username or password";
+									alert(msg);
+										</script>';
+							}
 						
-	}
+							
+		}
+			return true;
+	
+		}   //here i execute the function
+			SeleectAllUsers();
+
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

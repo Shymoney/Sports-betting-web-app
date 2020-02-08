@@ -1,75 +1,115 @@
 <?php
+		session_start();
 
-	require('Admin connect.php');
-	
-$obj = new Connect;
-$obj->__constructor();
-	
-if(isset($_COOKIE['user'])) $cook = $_COOKIE['user']; else{header('location:Admin login.php');}
+		ob_start();
 
-	if(isset($_POST['submit']))
-	{
-		
-	$category = $_POST['category'];
-	$league = $_POST['leaguename'];
-	$country = $_POST['country'];
-	$home = mysql_real_escape_string( $_POST['home']);
-	$draw = mysql_real_escape_string($_POST['draw']);
-	$away = mysql_real_escape_string($_POST['away']);
-	$over = mysql_real_escape_string($_POST['over']);
-	$under = mysql_real_escape_string($_POST['under']);
-	$score = mysql_real_escape_string($_POST['score']);
-	$score_1 = mysql_real_escape_string($_POST['score1']);
-	$time = mysql_real_escape_string($_POST['time']);
-	$club_home = mysql_real_escape_string($_POST['hometeam']);
-	$club_away = mysql_real_escape_string($_POST['awayteam']);
-	
-	$match_id= rand(1000,9999);
-	$valid= mysql_query("SELECT * FROM livematches 
-						WHERE match_id = '$match_id'") 
-						or die('could not select'.mysql_error());
-						
-	$num= mysql_num_rows($valid);
-	
-	if($num >0)
-	{
-	$match_id= -1;
-	}
-	elseif($num==0)
-		{
-//this is the normal insert query that sends the info to the database 
-$insert= "INSERT INTO livematches 
-values('$match_id','$category','$league','$country','$home','$draw','$away','$over','$under','$score','$score_1','$time','$club_home','$club_away')";	
-mysql_query($insert) or die('could not select'.mysql_error());
+		 require_once "Admin connect.php";
 
-
-
-		
-	if($insert){echo '<script type="text/javascript">
-						var msg = "successfully inserted";
-						alert(msg);
-						</script>';}
+		/*
+		* check if the session is set and not empty
+		* assign the session to a variable
+		*/
+		if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
+			$user_session = $_SESSION['Username'];
+				// var_dump($user_session); exit();
+		}else {
+			//redirect the user 
+			header("Location:Admin login.php");
 		}
-	
-	
-	
-	
-	}
-if(isset($_GET['match_id']))
-	{
-	$id= $_GET['match_id'];
-	
-$sql= mysql_query("select * from livematches order by id desc ",$connect) or die('could not select'.mysql_error);
-		$num=mysql_num_rows($sql);
-		while($row=mysql_fetch_array($sql,MYSQL_ASSOC))
-			{
-				$mtch_id[]= $row['match_id'];
-				$scor[]= $row['score'];
-				$scor_2[]= $row['score1'];
-				$tyme[]= $row['time'];
-			}
 
-}
+		
+		
+?>
+<?php
+	//create an instance of the class
+	$call_db = DatabaseConnect::getInstance();
+
+	if(isset($_POST['submit'])) {
+			
+		$category = $call_db->secureTxt($_POST['category']); 
+		$league = $call_db->secureTxt( $_POST['leaguename']);
+		$country = $call_db->secureTxt( $_POST['country']);
+		$home = $call_db->secureTxt( $_POST['home']);
+		$draw = $call_db->secureTxt($_POST['draw']);
+		$away = $call_db->secureTxt($_POST['away']);
+		$over = $call_db->secureTxt($_POST['over']);
+		$under = $call_db->secureTxt($_POST['under']);
+		$score = $call_db->secureTxt($_POST['score']);
+		$score_1 = $call_db->secureTxt($_POST['score1']);
+		$time = $call_db->secureTxt($_POST['time']);
+		$club_home = $call_db->secureTxt($_POST['hometeam']);
+		$club_away = $call_db->secureTxt($_POST['awayteam']);
+		
+		//generate a unique id
+		$match_id= rand(1000,9999);
+		
+		//prepare the select query
+		$valid= $call_db->connect->prepare("SELECT * FROM livematches WHERE match_id = '$match_id'");
+		//bind parameters
+		$valid->bindParam(':match_id', $match_id);
+		//execute query
+		$valid->execute();
+
+		//$valid->rowCount();					
+		//$num= mysql_num_rows($valid);
+		
+		if($valid->rowCount() > 0) {
+			$match_id= -1;
+
+		}elseif($valid->rowCount() == 0) {
+		//prepare the insert query 
+		$query = $call_db->connect-> prepare("INSERT INTO livematches(match_id,Category,leaguename,country,home,draw,away,over,under,score,score1,time,hometeam,awayteam)
+		VALUES('$match_id','$category','$league','$country','$home','$draw','$away','$over','$under','$score','$score_1','$time','$club_home','$club_away')");	
+		
+		//bind parameters
+		$query->bindParam(':match_id', $match_id, PDO::PARAM_INT);
+		$query->bindParam(':category', $category, PDO::PARAM_STR);
+		$query->bindParam(':leaguename', $league, PDO::PARAM_STR);
+		$query->bindParam(':country', $country, PDO::PARAM_STR);
+		$query->bindParam(':home', $home, PDO::PARAM_STR);
+		$query->bindParam(':draw', $draw, PDO::PARAM_STR);
+		$query->bindParam(':away', $away, PDO::PARAM_STR);
+		$query->bindParam(':over', $over, PDO::PARAM_STR);
+		$query->bindParam(':under', $under, PDO::PARAM_STR);
+		$query->bindParam(':score', $score, PDO::PARAM_STR);
+		$query->bindParam(':score1', $score_1, PDO::PARAM_STR);
+		$query->bindParam(':time', $time, PDO::PARAM_STR);
+		$query->bindParam(':hometeam', $club_home, PDO::PARAM_STR);
+		$query->bindParam(':awayteam', $club_home, PDO::PARAM_STR);
+
+		$result = $query->execute();
+					
+				if($result ){
+					echo '<script type="text/javascript">
+									var msg = "successfully inserted";
+									alert(msg);
+									</script>';
+				}
+			}
+		
+		
+		
+		
+	}
+
+
+	// if(isset($_GET['match_id'])) {
+	// 	$id= $_GET['match_id'];
+		
+	// 	$sql= $call_db->connect-> prepare("SELECT * FROM livematches ORDER BY id DESC ");
+	// 	$sql->execute();
+
+	// 		//$num=mysql_num_rows($sql);
+	// 		$sql->rowCount();
+	// 		while($row = $sql->fetch(PDO::FETCH_ASSOC))
+	// 			{
+	// 				$mtch_id[]= $row['match_id'];
+	// 				$scor[]= $row['score'];
+	// 				$scor_2[]= $row['score1'];
+	// 				$tyme[]= $row['time'];
+	// 			}
+
+	// }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

@@ -1,33 +1,62 @@
 <?php
 
-/*
-	//connect to the database server
-	//select the database betting to be use
-	$connect= mysql_connect("localhost","root","") or die('could not connect to database'.mysql_error($connect));
-	$select= mysql_select_db('Betting',$connect) or die('could not select database'.mysql_error($connect));
-*/
-
-	class Connect {
-		 var $mysql;
-		 var $sel;
-		 
-		function __constructor(){
-			
-		$this->mysql = mysql_connect("localhost","root","") or die('could not connect'.mysql_error());
-		$this->sel = mysql_select_db("Betting",$this->mysql) or die('could not select database'.mysql_error());
-			
-			
-			}
-		
-		
-		
-		}
-
-	//$obj = new con;
-	$obj = new  Connect;
-	$obj->__constructor();
-	//$obj->Access();
+class DatabaseConnect{
+	//variable declaration called properties in OOP
+	private static $_instance = null;
+	public $connect;
+	public $txt, $pwd;
 	
+	//declare a function construct
+	public function __construct() {
+		try {
+			$this->connect = new PDO('mysql:host=127.0.0.1;dbname=Betting','root','');
+			} catch (PDOException $e) {
+				die($e->getMessage());
+			 
+		}
+		
+	}	
+	//a method to instantiate the class
+	public function getInstance() {
+		//we use self to access the property $_instance then we return the output
+		if(isset(self::$_instance)){
+			return self::$_instance;
+		}
+		//we use self to call the property i the same class
+		self::$_instance = new DatabaseConnect();
+		return self::$_instance;
+	}
+
+	// to secure user input
+	public function secureTxt($txt) {
+		$txt = htmlentities($txt);
+		$txt= stripslashes($txt);
+		$this->txt = $txt;
+		return $this->txt; // return the output
+	}
+
+	//to secure user password
+	public function securePwd($pwd) {
+		//$pwd= sha1($pwd);
+		$pwd = htmlentities($pwd);
+		$pwd = stripslashes($pwd);
+		$this->pwd = $pwd;
+		return $this->pwd; // return the output
+		
+	}
+	
+	//to update the date
+	public function currentDate() {
+		//getting current date and time
+		$d = date("d-m-Y");
+		$t = date("h:i:sa");
+		$date = $d.' | '.$t;
+		$now =  time();	
+	}
+		
+}
+
+
 	
 ?>
 

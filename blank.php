@@ -1,18 +1,22 @@
 <?php
-include("connect.php");
+  require_once "connect.php";
 
+  //instantiate the class
+  $obj = DatabaseConnect::getInstance();
 
-$search = mysql_query("SELECT * FROM livematches WHERE hometeam REGEXP'arsenal|barca'"
-,$connect)or die('could not find the search query'.mysql_error());
+  $search = $obj->connect->prepare("SELECT * FROM livematches WHERE country LIKE 'g%' " );
 
-while($row= mysql_fetch_array($search,MYSQL_ASSOC))
-{
-	$id= $row['match_id'];
-	$club = $row['country'];
-	$home_team= $row['hometeam'];
-	$away_team= $row['awayteam'];	
-	
-}
+  $search->execute();
+  $count = $search->rowCount();
+  while($row= $search->fetch(PDO::FETCH_ASSOC))
+  {
+    $id= $row['match_id'];
+    $club = $row['country'];
+    $home_team= $row['hometeam'];
+    $away_team= $row['awayteam'];	
+    
+    
+  }
 
 
 ?>
@@ -25,10 +29,10 @@ while($row= mysql_fetch_array($search,MYSQL_ASSOC))
 </head>
 
 <body>
-<?php for($a=0; $a<=0; $a++){?>
+<?php for($a=0; $a<=$count; $a++){?>
 <table width="800" border="1" height="124">
   <tr>
-    <td><?php echo $search;?></td>
+    <td><?php echo $id;?></td>
     <td><?php echo $club;?></td>
     <td><?php echo $home_team;?></td>
     <td><?php echo $away_team;?></td>
