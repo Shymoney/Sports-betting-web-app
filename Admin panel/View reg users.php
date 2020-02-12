@@ -13,7 +13,7 @@
 			$user_session = $_SESSION['Username'];
 				
 		}else {
-			//redirect the user 
+      //redirect the user
 			header("Location:Admin login.php");
 		}
 
