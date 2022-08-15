@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9cb7568e-761e-4ccc-90d1-7f2f6cef0cb9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/betting site.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/Admin connect.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/Admin connect.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/Admin login.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/Admin login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/Edit live match.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/Edit live match.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/Edit livescores.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/Edit livescores.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/Upload live matches - Copy.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/Upload live matches.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/Upload live matches.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/View reg users.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/View reg users.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/category.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/category.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/country.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/country.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/league name.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/league name.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/upload upcoming events.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/upload upcoming events.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin panel/view live match.php" beforeDir="false" afterPath="$PROJECT_DIR$/Admin panel/view live match.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Contact us.php" beforeDir="false" afterPath="$PROJECT_DIR$/Contact us.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connect.php" beforeDir="false" afterPath="$PROJECT_DIR$/connect.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2DPBzIuyrvzozaSkrhanaOvuTtN" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Admin login.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/Admin panel/Admin login.php">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="PHP Script.Admin login.php" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9cb7568e-761e-4ccc-90d1-7f2f6cef0cb9" name="Default Changelist" comment="" />
+      <created>1660591106424</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1660591106424</updated>
+      <workItem from="1660591176936" duration="3259000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="387" y="52" key="#Admin_login.php" timestamp="1660594288202">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="387" y="52" key="#Admin_login.php/0.0.1366.728@0.0.1366.728" timestamp="1660594288202" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1660594803153">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1660594803153" />
+  </component>
+</project>
