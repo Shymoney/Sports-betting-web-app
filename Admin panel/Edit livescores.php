@@ -1,25 +1,21 @@
 
 <?php
-		session_start();
+    session_start();
+    ob_start();
 
-		ob_start();
+    require_once "Admin connect.php";
 
-		require_once "Admin connect.php";
+    /*
+    * check if the session is set and not empty
+    * assign the session to a variable
+    */
+    if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
+        $user_session = $_SESSION['Username'];
 
-		/*
-		* check if the session is set and not empty
-		* assign the session to a variable
-		*/
-		if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
-			$user_session = $_SESSION['Username'];
-				
-		}else {
-			//redirect the user 
-			header("Location:Admin login.php");
-		}
-
-		
-		
+    }else {
+        //redirect the user
+        header("Location:Admin login.php");
+    }
 ?>
 
 <?php
@@ -47,10 +43,6 @@
 	
 	}
 	
-	
-	
-	
-	
 	if(isset($_POST['submit']))
 	{
 	$hme = $_POST['home'];
@@ -61,28 +53,22 @@
 	$sco = $_POST['score'];
 	$sco_1 = $_POST['score1'];
 	$tyme = $_POST['time'];
-	
 		
-$insert= mysql_query("UPDATE livematches SET home='$hme',draw='$drw',away='$awy',over='$ovr',under='$undr',score='$sco',score1='$sco_1',time='$tyme'
+$insert= mysql_query("UPDATE livematches SET home='$hme',
+                            draw='$drw',
+                            away='$awy',
+                            over='$ovr',
+                            under='$undr',
+                            score='$sco',
+                            score1='$sco_1',
+                            time='$tyme'
 WHERE match_id='$get'",$connect) or die(''.mysql_error());
-	
-		
-
 		
 	if($insert){echo '<script type="text/javascript">
 						var msg = "successfully inserted";
 						alert(msg);
 						</script>';}
 		}
-	
-	
-	
-	
-	
-	
-
-
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

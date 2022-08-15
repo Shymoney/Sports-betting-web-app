@@ -1,12 +1,11 @@
 <?php
 
-class DatabaseConnect{
-	//variable declaration called properties in OOP
+class DatabaseConnect {
+
 	private static $_instance = null;
 	public $connect;
 	public $txt, $pwd;
-	
-	//declare a function construct
+
 	public function __construct() {
 		try {
 			$this->connect = new PDO('mysql:host=127.0.0.1;dbname=Betting','root','');
@@ -57,6 +56,4 @@ class DatabaseConnect{
 }
 
 
-	
-?>
 
