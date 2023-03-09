@@ -1,5 +1,6 @@
 <?php
         session_start();
+
         require_once "connect.php";
 
         //instance of a class is known as obj
@@ -14,7 +15,7 @@
 				 //var_dump($_SESSION['Username']); exit();
 		else {
 			//redirect the user 
-			//header("Location:index.php");
+			header("Location:index.php");
 		}
 ?>
 
