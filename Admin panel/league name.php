@@ -1,29 +1,24 @@
 <?php
-		session_start();
+    session_start();
+    ob_start();
 
-		ob_start();
+    require_once "Admin connect.php";
 
-		require_once "Admin connect.php";
-
-		/*
-		* check if the session is set and not empty
-		* assign the session to a variable
-		*/
-		if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
-			$user_session = $_SESSION['Username'];
-				
-		}else {
-			//redirect the user 
-			header("Location:Admin login.php");
-		}
-
-		
-		
+    /*
+    * check if the session is set and not empty
+    * assign the session to a variable
+    */
+    if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
+        $user_session = $_SESSION['Username'];
+    }else {
+        //redirect the user
+        header("Location:Admin login.php");
+    }
 ?>
 <?php
 		
 	if(isset($_POST['submit'])){
-		
+
 	$league= $_POST['League'];
 
 	$query= "INSERT INTO league

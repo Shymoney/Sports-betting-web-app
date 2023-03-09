@@ -1,10 +1,7 @@
 <?php
 
-
-//i want to use Object oriented Programming with class
-
 class DatabaseConnect{
-	//variable declaration called properties in OOP
+
 	private static $_instance = null;
 	public $connect;
 	public $txt, $pwd;
@@ -18,9 +15,8 @@ class DatabaseConnect{
 				die($e->getMessage());
 			 
 		}
-		
 	}	
-	//a method to instantiate the class
+
 	public static function getInstance() {
 		//we use self to access the property $_instance then we return the output
 		if(isset(self::$_instance)){
@@ -30,9 +26,7 @@ class DatabaseConnect{
 		self::$_instance = new DatabaseConnect();
 		return self::$_instance;
 	}
-		
 
-	// to secure user input
 	public function secureTxt($txt) {
 		$txt = htmlentities($txt);
 		$txt= stripslashes($txt);
@@ -40,7 +34,6 @@ class DatabaseConnect{
 		return $this->txt; // return the output
 	}
 
-	//to secure user password
 	public function securePwd($pwd) {
 		//$pwd= sha1($pwd);
 		$pwd = htmlentities($pwd);
@@ -49,8 +42,7 @@ class DatabaseConnect{
 		return $this->pwd; // return the output
 		
 	}
-	
-	//to update the date
+
 	public function currentDate() {
 		//getting current date and time
 		$d = date("d-m-Y");
@@ -60,7 +52,4 @@ class DatabaseConnect{
 	}
 	
 }
-	
-	
-?>
 

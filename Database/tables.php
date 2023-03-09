@@ -2,7 +2,7 @@
 	require_once('connect.php');
 	//creating tables we query
 	//mysql_query("drop table REGISTRATION",$connect);
-	$sql = 'create table if not exists REGISTRATION(
+	$sql = 'create table if not exists Registration(
 	
 	REG_id int(6) primary key auto_increment not null,
 	Username varchar(45),
@@ -19,8 +19,6 @@
 	State varchar(25),
 	Mobile varchar(25),
 	agree varchar(6)
-		
-		
 	
 	)';
 	mysql_query($sql,$connect) or die('could not create table'.mysql_error());

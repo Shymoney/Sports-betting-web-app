@@ -4,24 +4,17 @@
  
 /* here we include our "Admin connect page" were the database is selected*/
  require_once "Admin connect.php";
-	
- 
-
 class AdminLogin extends DatabaseConnect {
-
 
 	//object property decleration
 	 protected $u;
 	 protected $p;
 	 protected $p2;
-
 	
 	//a function handles the user input
 	public function handle_login() {
 		//create an instance of the object
 		$call_db = DatabaseConnect::getInstance();
-		
-		
 
 		if(isset($_POST['Submit'])) {
 
@@ -30,24 +23,21 @@ class AdminLogin extends DatabaseConnect {
 			$this->p = $call_db->securePwd($_POST['password1']);
 			$this->p2 =$call_db->securePwd($_POST['password2']);
 			
-			$login =$call_db->connect-> prepare("SELECT * FROM adminlogin WHERE Username=:username && Password = :password1 && ConfirmPassword = :password2 ");
+			$login =$call_db->connect-> prepare("SELECT * FROM adminlogin 
+                    WHERE Username=:username && Password = :password1 && ConfirmPassword = :password2 ");
 			
-			//bind paramters with input placeholders
+			//bind parameters with input placeholders
 			$login->bindParam(':username',$this->u, PDO::PARAM_STR);
 			$login->bindParam(':password1', $this->p, PDO::PARAM_STR);
 			$login->bindParam(':password2',$this->p2, PDO::PARAM_STR);
-			
-			//execute the query
+
 			$result = $login->execute();
-			//var_dump($result); exit();
 			
 			//now we set our session
 			if($login->rowCount()  > 0){
-			
-			// fetch the data 
+
 			$session_data = $login->fetch(PDO::FETCH_ASSOC);
-						
-			// set session data
+
 			$_SESSION['Username'] = $session_data['Username'];
 			
 			//redirect after a successful login
@@ -59,12 +49,7 @@ class AdminLogin extends DatabaseConnect {
 					alert(msg);
 					</script>';	
 			}
-		
-		
 		}
-
-		
-			
 	}
 
 	
