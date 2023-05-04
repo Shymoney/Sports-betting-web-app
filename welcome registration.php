@@ -114,7 +114,7 @@ body {
 				
 				if($login->rowCount() > 0){
 				
-					while($row= fetch(PDO::FETCH_ASSOC)) {
+					while($row= $login->fetch(PDO::FETCH_ASSOC)) {
 							
 							$id=$row['User_ID'];
 							$user=$row['Username'];

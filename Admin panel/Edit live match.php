@@ -1,7 +1,6 @@
 <?php
 	
 	session_start();
-
 	ob_start();
 
 	require_once "Admin connect.php";
@@ -12,14 +11,10 @@
 	*/
 	if(isset($_SESSION['Username']) && !empty ($_SESSION['Username'])) {
 		$user_session = $_SESSION['Username'];
-			
 	}else {
 		//redirect the user 
 		header("Location:Admin login.php");
 	}
-
-	
-	
 ?>
 
 

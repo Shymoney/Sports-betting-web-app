@@ -4,12 +4,9 @@
     //connecting to our database
     require_once "connect.php";
 
-
-
     //a method to handle the select User username & password query
     function SeleectAllUsers() {
 
-        //call the instance of the class
         $obj =  DatabaseConnect::getInstance();
 
         if(isset($_POST['Submit'])) {
@@ -43,7 +40,6 @@
                 
             }
 		
-		
             //query the database
             $login= $obj->connect->prepare("SELECT * 
                             FROM registration 
@@ -65,9 +61,6 @@
                         $view=$row['view'];
                     }
                 
-                
-
-                
                 $query = $obj->connect->prepare("UPDATE registration SET view=view+1");
                 $query->execute();
                                     
@@ -82,18 +75,13 @@
                                 alert(msg);
                                     </script>';
                         }
-                    
-                        
 }
     
 
 }   //here i execute the function
     SeleectAllUsers();
 
-    // a function to handle livematches
-     //function SelectLiveMatches(){
-
-        //call the instance of the class
+     //call the instance of the class
         $obj =  DatabaseConnect::getInstance();
 
         $query = $obj->connect->prepare("SELECT * FROM livematches order by match_id desc limit 0,7");
@@ -143,9 +131,8 @@
                         order by match_id desc limit 0,15 ");
         $query_2->execute();
 
-            //check the rows
-		// if($query_2->rowCount() > 0){
-            $count_2 = $query_2->rowCount();
+        //check the rows
+        $count_2 = $query_2->rowCount();
 
         
 			while($hold = $query_2->fetch(PDO::FETCH_ASSOC))
@@ -171,19 +158,8 @@
                 
 			
             }
-        //}
-
-    //}
         //execute the function
         //SelectUpcomingEvent();
-
-
-   
-
-
-
-	
-
 ?>
 
 

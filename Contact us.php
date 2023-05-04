@@ -1,7 +1,7 @@
 <?php
 
 require_once('connect.php');
-//instance of a class is known as obj
+
 $obj = new Connect;
 $obj->Mysql();
 
@@ -10,13 +10,10 @@ if(isset($_POST['Submit']))
 		$u= $_POST['Username'];
 		$p= $_POST['password1'];
 
-		
-//query the database
 $login= mysql_query("SELECT * 
 				FROM registration 
 				WHERE Username='$u' && password1='$p'",$obj->connect) or die('could not login'.mysql_error());
 
-		
 	$num= mysql_num_rows($login); 
 	while($row= mysql_fetch_array($login))
 		{	
